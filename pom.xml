@@ -13,7 +13,7 @@
     <description>A simple web application</description>
 
     <build>
-        <finalName>myapp</finalName>
+        <finalName>ShivasApp</finalName>
         <plugins>
             <!-- Maven Compiler Plugin -->
             <plugin>
