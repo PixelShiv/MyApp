@@ -5,7 +5,6 @@ pipeline {
         MAVEN_HOME = tool 'maven'
         SONARQUBE_ENV = 'MySonar'
         SONAR_HOST_URL = 'http://ec2-54-90-74-217.compute-1.amazonaws.com:9000'  // Replace with your SonarQube URL
-        SONAR_AUTH_TOKEN = credentials('sonar-token')  // Your SonarQube token stored in Jenkins credentials
         DEPLOY_USER = 'ec2-user'
         DEPLOY_HOST = 'ec2-18-234-234-52.compute-1.amazonaws.com'
         DEPLOY_PATH = '/opt/tomcat/webapps'
