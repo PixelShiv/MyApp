@@ -52,7 +52,6 @@ pipeline {
             steps {
                 echo 'Skipping Quality Gate wait — using SonarQube Community Edition'
                 }
-            }
         }
 
         stage('Deploy to Tomcat') {
