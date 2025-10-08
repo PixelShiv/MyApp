@@ -70,7 +70,7 @@ pipeline {
                     if [ -d ${DEPLOY_PATH}${WAR_NAME.replace('.war','')} ]; then
                         sudo rm -rf ${DEPLOY_PATH}${WAR_NAME.replace('.war','')}
                     fi && \
-                    sudo mv /home/${DEPLOY_USER}/${WAR_NAME} ${DEPLOY_PATH}${WAR_NAME} && \
+                    sudo mv /home/${DEPLOY_USER}/${WAR_NAME} ${DEPLOY_PATH}/${WAR_NAME} && \
                     sudo chown -R tomcat:tomcat ${DEPLOY_PATH}${WAR_NAME} && \
                     sudo systemctl restart tomcat
                 "
