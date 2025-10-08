@@ -85,7 +85,7 @@
   <body>
     <header>
       <h1>🚀 Welcome to My Automated CI/CD Project!</h1>
-      <h2>Crafted with ❤️ by <span style="color:#FF69B4;">Shiva</span></h2>
+      <h2>Crafted by <span style="color:#FF69B4;">Shiva</span></h2>
     </header>
 
     <div class="container">
