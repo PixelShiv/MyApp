@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    environment {
+        // Replace with the ID of Jenkins credentials you will create
+        ARTIFACTORY_CREDENTIALS = 'jfrog-credentials'
+        ARTIFACTORY_URL = 'http://34.229.171.234:8082/artifactory'
+        ARTIFACTORY_REPO = 'shivas-frog'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/your-username/your-repo.git'
+            }
+        }
+
+        stage('Build & Deploy') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: "${ARTIFACTORY_CREDENTIALS}", 
+                                  usernameVariable: 'ART_USER', 
+                                  passwordVariable: 'ART_PASSWORD')]) {
+                    sh """
+                        mvn clean deploy \
+                        -DaltDeploymentRepository=${ARTIFACTORY_REPO}::default::${ARTIFACTORY_URL}/${ARTIFACTORY_REPO} \
+                        -Dusername=$ART_USER \
+                        -Dpassword=$ART_PASSWORD
+                    """
+                }
+            }
+        }
+    }
+}
