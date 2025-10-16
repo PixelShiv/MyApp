@@ -54,30 +54,30 @@ pipeline {
             }
         }
 
-        stage('Deploy to Tomcat') {
-    steps {
-        echo '🚀 Deploying WAR to Tomcat safely...'
-        sshagent (credentials: ['ec2-key']) {
-            sh """
-                # Copy WAR to temporary location on remote host
-                scp -o StrictHostKeyChecking=no target/${WAR_NAME} ${DEPLOY_USER}@${DEPLOY_HOST}:/home/${DEPLOY_USER}/${WAR_NAME}
+//         stage('Deploy to Tomcat') {
+//     steps {
+//         echo '🚀 Deploying WAR to Tomcat safely...'
+//         sshagent (credentials: ['ec2-key']) {
+//             sh """
+//                 # Copy WAR to temporary location on remote host
+//                 scp -o StrictHostKeyChecking=no target/${WAR_NAME} ${DEPLOY_USER}@${DEPLOY_HOST}:/home/${DEPLOY_USER}/${WAR_NAME}
 
-                # Backup existing WAR, remove exploded app, move new WAR, fix ownership, and restart Tomcat
-                ssh -o StrictHostKeyChecking=no ${DEPLOY_USER}@${DEPLOY_HOST} "
-                    if [ -f ${DEPLOY_PATH}/${WAR_NAME} ]; then
-                        sudo mv ${DEPLOY_PATH}/${WAR_NAME} ${DEPLOY_PATH}/${WAR_NAME}.bak
-                    fi && \
-                    if [ -d ${DEPLOY_PATH}${WAR_NAME.replace('.war','')} ]; then
-                        sudo rm -rf ${DEPLOY_PATH}${WAR_NAME.replace('.war','')}
-                    fi && \
-                    sudo mv /home/${DEPLOY_USER}/${WAR_NAME} ${DEPLOY_PATH}/${WAR_NAME} && \
-                    sudo chown -R tomcat:tomcat ${DEPLOY_PATH}${WAR_NAME} && \
-                    sudo systemctl restart tomcat
-                "
-            """
-        }
-    }
-}
+//                 # Backup existing WAR, remove exploded app, move new WAR, fix ownership, and restart Tomcat
+//                 ssh -o StrictHostKeyChecking=no ${DEPLOY_USER}@${DEPLOY_HOST} "
+//                     if [ -f ${DEPLOY_PATH}/${WAR_NAME} ]; then
+//                         sudo mv ${DEPLOY_PATH}/${WAR_NAME} ${DEPLOY_PATH}/${WAR_NAME}.bak
+//                     fi && \
+//                     if [ -d ${DEPLOY_PATH}${WAR_NAME.replace('.war','')} ]; then
+//                         sudo rm -rf ${DEPLOY_PATH}${WAR_NAME.replace('.war','')}
+//                     fi && \
+//                     sudo mv /home/${DEPLOY_USER}/${WAR_NAME} ${DEPLOY_PATH}/${WAR_NAME} && \
+//                     sudo chown -R tomcat:tomcat ${DEPLOY_PATH}${WAR_NAME} && \
+//                     sudo systemctl restart tomcat
+//                 "
+//             """
+//         }
+//     }
+// }
     }
 
     post {
