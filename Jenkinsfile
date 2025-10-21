@@ -39,8 +39,8 @@ pipeline {
                 withSonarQubeEnv(SONARQUBE_ENV) {
                     sh """
                         ${MAVEN_HOME}/bin/mvn sonar:sonar \
-                          -Dsonar.projectKey=shivas-project \
-                          -Dsonar.projectName="Shivas Project" \
+                          -Dsonar.projectKey=simple-project \
+                          -Dsonar.projectName="simple-project" \
                           -Dsonar.host.url=${SONAR_HOST_URL} \
                           -Dsonar.java.binaries=target/classes
                     """
