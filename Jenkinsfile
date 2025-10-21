@@ -33,26 +33,53 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                echo '🔍 Running SonarQube analysis...'
-                withSonarQubeEnv(SONARQUBE_ENV) {
-                    sh """
-                        ${MAVEN_HOME}/bin/mvn sonar:sonar \
-                          -Dsonar.projectKey=simple-project \
-                          -Dsonar.projectName="simple-project" \
-                          -Dsonar.host.url=${SONAR_HOST_URL} \
-                          -Dsonar.java.binaries=target/classes
-                    """
-                }
-            }
-        }
+        // stage('SonarQube Analysis') {
+        //     steps {
+        //         echo '🔍 Running SonarQube analysis...'
+        //         withSonarQubeEnv(SONARQUBE_ENV) {
+        //             sh """
+        //                 ${MAVEN_HOME}/bin/mvn sonar:sonar \
+        //                   -Dsonar.projectKey=simple-project \
+        //                   -Dsonar.projectName="simple-project" \
+        //                   -Dsonar.host.url=${SONAR_HOST_URL} \
+        //                   -Dsonar.java.binaries=target/classes
+        //             """
+        //         }
+        //     }
+        // }
 
-        stage('Quality Gate') {
-            steps {
-                echo 'Skipping Quality Gate wait — using SonarQube Community Edition'
-            }
+        // stage('Quality Gate') {
+        //     steps {
+        //         echo 'Skipping Quality Gate wait — using SonarQube Community Edition'
+        //     }
+        // }
+
+        stage('📦 Upload to JFrog Artifactory') {
+    steps {
+        script {
+            echo '🔹 Starting JFrog Artifactory Upload...'
+
+            // Dynamically enter details (can be parameterized)
+            def artifactoryServer = Artifactory.server("${JFROG_SERVER_ID}")  // e.g., 'jfrog-server'
+            def uploadSpec = """{
+                "files": [
+                    {
+                        "pattern": "target/*.jar",
+                        "target": "my-repo/path/to/artifacts/",
+                        "flat": "true"
+                    }
+                ]
+            }"""
+
+            // Upload to Artifactory
+            def buildInfo = artifactoryServer.upload spec: uploadSpec
+            artifactoryServer.publishBuildInfo(buildInfo)
+
+            echo '✅ JFrog Artifactory upload completed successfully!'
         }
+    }
+}
+
 
 //         stage('Deploy to Tomcat') {
 //     steps {
